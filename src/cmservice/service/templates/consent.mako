@@ -57,23 +57,6 @@
     % endif
     <div class="row"><hr/></div>
 
-    <div class="row">
-      <div class="col-md-10">
-        <h5>${_("For how long do you give consent to this service?")}</h5>
-      </div>
-      <div class="col-md-2 aligh-right sp-col-2">
-        <form name="allow_consent" id="allow_consent_form"
-              action="save_consent" method="GET">
-        <select name="month" id="month">
-            % for month in months:
-                <option value="${month}">
-                    <span>${month}</span> <span> ${_("months")}</span>
-                </option>
-            % endfor
-        </select>
-      </div>
-    </div>
-
     <div class="row clearfix"><br/></div>
     <div class="btn-block">
       <input name="Yes" value="${_('OK, accept')}" id="submit_ok"
