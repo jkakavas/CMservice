@@ -21,8 +21,14 @@
 <%block name="extra_inputs">
     <input type="hidden" name="state" value="${ state }">
 </%block>
-
-## ${_(consent_question)}
+<div class="row">
+  <div class="col-md-10">
+    ${_(consent_description)}
+  </div>
+  <div class="col-md-2 aligh-right sp-col-2">
+     <img src="${logo_filename}"/>
+  </div>
+</div>
 
 <div class="list-group">
     <p class="small">
@@ -57,25 +63,9 @@
     % endif
     <div class="row"><hr/></div>
 
-    <div class="row">
-      <div class="col-md-10">
-        <h5>${_("For how long do you give consent to this service?")}</h5>
-      </div>
-      <div class="col-md-2 aligh-right sp-col-2">
-        <form name="allow_consent" id="allow_consent_form"
-              action="save_consent" method="GET">
-        <select name="month" id="month">
-            % for month in months:
-                <option value="${month}">
-                    <span>${month}</span> <span> ${_("months")}</span>
-                </option>
-            % endfor
-        </select>
-      </div>
-    </div>
-
     <div class="row clearfix"><br/></div>
     <div class="btn-block">
+    <form name="allow_consent" id="allow_consent_form" action="save_consent" method="GET">
       <input name="Yes" value="${_('OK, accept')}" id="submit_ok"
              type="submit" class="btn btn-primary">
       <input name="No" value="${_('No, cancel')}" id="submit_deny"
