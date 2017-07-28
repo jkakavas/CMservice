@@ -81,7 +81,6 @@ def set_language():
 def save_consent():
     state = request.args['state']
     redirect_uri = session['redirect_endpoint']
-    month = request.args['month']
     attributes = request.args['attributes'].split(",")
 
     if state != session['state']:
@@ -92,7 +91,7 @@ def save_consent():
         abort(400)
 
     if ok == 'Yes':
-        consent = Consent(attributes, int(month))
+        consent = Consent(attributes)
         current_app.cm.save_consent(session['id'], consent)
         session.clear()
     return redirect(redirect_uri)

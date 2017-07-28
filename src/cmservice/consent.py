@@ -7,7 +7,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Consent(object):
-    def __init__(self, attributes: list, months_valid: int, timestamp: datetime = None):
+    def __init__(self, attributes: list, months_valid: int = 0, timestamp: datetime = None):
         """
 
         :param id: identifier for the consent

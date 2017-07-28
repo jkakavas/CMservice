@@ -65,16 +65,16 @@
 
     <div class="row clearfix"><br/></div>
     <div class="btn-block">
-    <form name="allow_consent" id="allow_consent_form" action="save_consent" method="GET">
+    <form name="allow_consent" id="allow_consent_form" action="/save_consent" method="GET">
       <input name="Yes" value="${_('OK, accept')}" id="submit_ok"
              type="submit" class="btn btn-primary">
       <input name="No" value="${_('No, cancel')}" id="submit_deny"
              type="submit" class="btn btn-warning">
-     </div>
       <input type="hidden" id="attributes" name="attributes"/>
       <input type="hidden" id="consent_status" name="consent_status"/>
-    ${extra_inputs()}
+      ${extra_inputs()}
     </form>
+    </div>
 </div>
 
 <script>
