@@ -37,6 +37,8 @@
       <b>${requester_name}</b> 
          ${_("would like to access the following attributes:")}
     </p>
+    <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#attributeDetails" aria-expanded="false" aria-controls="attributeDetails">${_("Show details")}</button>
+     <div class="collapse" id="attributeDetails">
     % for attribute in released_claims:
         <div class="checkbox list-group-item">
           <h4 class="list-group-item-heading">
@@ -50,6 +52,7 @@
             </label>
         </div>
     % endfor
+      </div>
 
     % if locked_claims:
       <div class="btn btn-link"
