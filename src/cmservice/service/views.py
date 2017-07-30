@@ -1,6 +1,7 @@
 import copy
 import logging
 from uuid import uuid4
+from urllib.parse import urlparse
 
 import pkg_resources
 from flask import abort, jsonify
@@ -59,11 +60,12 @@ def consent(ticket):
     session['attr'] = data['attr']
     session['locked_attrs'] = data.get('locked_attrs', [])
     session['requester_name'] = data['requester_name']
+    session['requester_logo'] = data.get('requester_logo',None)
 
     # TODO should find list of supported languages dynamically
     session['language'] = request.accept_languages.best_match(['sv', 'en'])
     requester_name = find_requester_name(session['requester_name'], session['language'])
-    return render_consent(session['language'], requester_name, session['locked_attrs'], copy.deepcopy(session['attr']),
+    return render_consent(session['language'], requester_name, session['requester_logo'], session['locked_attrs'], copy.deepcopy(session['attr']),
                           session['state'], current_app.config['USER_CONSENT_EXPIRATION_MONTH'],
                           str(current_app.config['AUTO_SELECT_ATTRIBUTES']))
 
@@ -72,7 +74,7 @@ def consent(ticket):
 def set_language():
     session['language'] = request.args['lang']
     requester_name = find_requester_name(session['requester_name'], session['language'])
-    return render_consent(session['language'], requester_name, session['locked_attrs'], copy.deepcopy(session['attr']),
+    return render_consent(session['language'], requester_name, session['requester_logo'], session['locked_attrs'], copy.deepcopy(session['attr']),
                           session['state'], current_app.config['USER_CONSENT_EXPIRATION_MONTH'],
                           str(current_app.config['AUTO_SELECT_ATTRIBUTES']))
 
@@ -96,8 +98,7 @@ def save_consent():
         session.clear()
     return redirect(redirect_uri)
 
-
-def render_consent(language: str, requester_name: str, locked_attr: list, released_claims: dict, state: str,
+def render_consent(language: str, requester_name: str, requester_logo: str, locked_attr: list, released_claims: dict, state: str,
                    months: list, select_attributes: bool) -> str:
     if not isinstance(locked_attr, list):
         locked_attr = [locked_attr]
@@ -112,6 +113,7 @@ def render_consent(language: str, requester_name: str, locked_attr: list, releas
         form_action='/set_language',
         language=language,
         requester_name=requester_name,
+        requester_logo=_normalize_logo(requester_logo),
         months=months,
         select_attributes=select_attributes)
 
@@ -121,3 +123,14 @@ def find_requester_name(requester_name: list, language: str) -> str:
     # fallback to english, or if all else fails, use the first entry in the list of names
     fallback = requester_names.get('en', requester_name[0]['text'])
     return requester_names.get(language, fallback)
+
+def _normalize_logo(requester_logo):
+    if requester_logo:
+        parsed_path = urlparse(requester_logo)
+        if parsed_path.scheme in ['http', 'https']
+            normalized_path = requester_logo
+        else:
+            normalized_path = os.path.join(current_app.config['LOGO_BASE_PATH'],requester_logo)
+        return normalized_path
+    else:
+        return None
