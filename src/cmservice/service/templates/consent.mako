@@ -23,10 +23,12 @@
 </%block>
 <div class="row">
   <div class="col-md-10">
-    ${_(consent_description)}
+      ${_("This description will explain to the academic user what is going on and what information we will share with the service.")}
   </div>
   <div class="col-md-2 aligh-right sp-col-2">
-     <img src="${logo_filename}"/>
+      % if requester_logo:
+      <img id="requester_logo" class="requester_logo" src="${requester_logo}"/>
+      % endif
   </div>
 </div>
 
