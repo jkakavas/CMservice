@@ -16,14 +16,14 @@
 
 <%inherit file="base.mako"/>
 
-<%block name="head_title">Consent</%block>
+<%block name="head_title">${_("Consent")}</%block>
 <%block name="page_header">${_("Your consent is required to continue.")}</%block>
 <%block name="extra_inputs">
     <input type="hidden" name="state" value="${ state }">
 </%block>
 <div class="row">
   <div class="col-md-10">
-      ${_("This description will explain to the academic user what is going on and what information we will share with the service.")}
+      ${_("This description will explain to the academic user what is going on and what information we will share with ${requester_name}.")}
   </div>
   <div class="col-md-2 aligh-right sp-col-2">
       % if requester_logo:
@@ -31,41 +31,23 @@
       % endif
   </div>
 </div>
-
-<div class="list-group">
-    <p class="small">
-      <b>${requester_name}</b> 
-         ${_("would like to access the following attributes:")}
-    </p>
-    <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#attributeDetails" aria-expanded="false" aria-controls="attributeDetails">${_("Show details")}</button>
-     <div class="collapse" id="attributeDetails">
-    % for attribute in released_claims:
-        <div class="checkbox list-group-item">
-          <h4 class="list-group-item-heading">
-          </h4>
-            <label><input type="checkbox"
-                 name="${attribute.lower()}"
-                 value="${released_claims[attribute] | list2str}"
-                 checked>
-                 &nbsp;<span>${_(attribute).capitalize()}</span>:&nbsp;
-                 <span>${released_claims[attribute] | list2str}</span>
-            </label>
+<div class="row clearfix"><br/></div>
+<div class="row clearfix"><br/></div>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" data-target="#attributeDetails" aria-expanded="false" aria-controls="attributeDetails"><h4 class="panel-title">${_("Details")}</h4></a>
         </div>
-    % endfor
-      </div>
-
-    % if locked_claims:
-      <div class="btn btn-link"
-           onclick="$('#locked').toggleClass('hidden');">
-        <h4 class="small">${_("Click to see what else is sent with your consent")}</h4>
-        <div class="hidden list-group-item" id="locked">
-        % for attribute in locked_claims:
-          <span> ${_(attribute).capitalize()}</span>:&nbsp;
-          <span>${locked_claims[attribute] | list2str}</span>
-        % endfor
+        <div class="panel-collapse collapse" id="attributeDetails">
+             <ul class="list-group">
+             % for attribute in released_claims:
+                 <li class="list-group-item"><span>${_(attribute).capitalize()}</span>:&nbsp;
+                 <span>${released_claims[attribute] | list2str}</span></li>
+             % endfor
+             </ul>
         </div>
-      </div>
-    % endif
+    </div>
+</div>
     <div class="row"><hr/></div>
 
     <div class="row clearfix"><br/></div>
