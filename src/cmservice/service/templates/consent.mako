@@ -43,6 +43,7 @@
              % for attribute in released_claims:
                  <li class="list-group-item"><span>${_(attribute).capitalize()}</span>:&nbsp;
                  <span>${released_claims[attribute] | list2str}</span></li>
+                 <input class="attr" type="hidden" name="${attribute.lower()}" value="${released_claims[attribute] | list2str}"/>
              % endfor
              </ul>
         </div>
@@ -63,40 +64,19 @@
     </form>
     </div>
 </div>
-
 <script>
-    $('input:checked').each(function () {
-        if (!${select_attributes.lower()}) {
-            $(this).removeAttr("checked")
-        }
-    });
-
-    $('#allow_consent_form').submit(function (ev) {
+   $('#allow_consent_form').submit(function (ev) {
         ev.preventDefault(); // to stop the form from submitting
 
         var attributes = [];
-        $('input:checked').each(function () {
+        $('input.attr').each(function () {
             attributes.push(this.name);
         });
-
-        var consent_status = $('#consent_status');
-
-        var status = $("input[type=submit][clicked=true]").attr("name");
-        consent_status.val(status);
-
-        if (attributes.length == 0) {
-            consent_status.val("No");
-            alert("${_('No attributes where selected which equals no consent where given')}");
-        }
-
-        % for attr in locked_claims:
-            attributes.push("${attr}");
-        % endfor
         $('#attributes').val(attributes);
-
-        this.submit(); // If all the validations succeeded
+        var status = $("input[type=submit][clicked=true]").attr("name");
+        $('#consent_status').val(status);
+        this.submit();
     });
-
     $("form input[type=submit]").click(function () {
         $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
         $(this).attr("clicked", "true");
