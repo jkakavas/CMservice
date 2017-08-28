@@ -66,7 +66,12 @@ def create_app(config: dict = None):
         app.config.update(config)
     else:
         app.config.from_envvar("CMSERVICE_CONFIG")
-
+    secret_key = os.environ.get("CMSERVICE_SECRET_KEY")
+    consent_salt = os.environ.get("CMSERVICE_CONSENT_SALT")
+    if secret_key:
+        app.config.set("SECRET_KEY", secret_key)
+    if consent_salt:
+        app.config.set("CONSENT_SALT", consent_salt)
     mako = MakoTemplates()
     mako.init_app(app)
     app._mako_lookup = TemplateLookup(directories=[pkg_resources.resource_filename('cmservice.service', 'templates')],
